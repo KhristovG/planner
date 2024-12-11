@@ -1,0 +1,23 @@
+# Игнорировать виртуальные окружения
+venv/
+env/
+*.egg-info/
+
+# Игнорировать файлы Python Bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Игнорировать логи и временные файлы
+*.log
+*.tmp
+
+# Игнорировать настройки IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Игнорировать файлы системы
+.DS_Store        # macOS
+Thumbs.db        # Windows
