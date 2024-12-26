@@ -8,4 +8,4 @@ HF_API_KEY = {ваш ключ}
 
 3) запустите ```main.py```
 
-4) после запуска ```main.py```  файлик с тулзами будет записываться в generation/generated_code
+4) после запуска ```main.py```  файлик с тулзами будет записываться в [generation/generated_code](https://github.com/KhristovG/planner/tree/maksim_branch/maksim_pipeline/generation/generated_code)
