@@ -4,7 +4,7 @@
 ```
 HF_API_KEY = {ваш ключ}
 ```
-найти можн на ![hf](https://huggingface.co/settings/tokens)
+найти можно на [Hugging Face](https://huggingface.co/settings/tokens)
 
 3) запустите ```main.py```
 
