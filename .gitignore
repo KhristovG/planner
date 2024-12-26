@@ -2,6 +2,7 @@
 venv/
 env/
 *.egg-info/
+*.env
 
 # Игнорировать файлы Python Bytecode
 __pycache__/
