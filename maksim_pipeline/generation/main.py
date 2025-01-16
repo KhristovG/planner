@@ -7,7 +7,7 @@ from generator import Generator
 from collector import CodeCollector
 
 
-dataset = pd.read_csv('scenarios.csv')
+dataset = pd.read_csv('scenarios_with_funcs.csv')
 dataset.index.name = "Index"
 
 generator = Generator(system_prompt_file="system_prompt.txt")
