@@ -2,7 +2,7 @@
 venv/
 env/
 *.egg-info/
-
+*env
 # Игнорировать файлы Python Bytecode
 __pycache__/
 *.pyc
@@ -21,3 +21,4 @@ __pycache__/
 # Игнорировать файлы системы
 .DS_Store        # macOS
 Thumbs.db        # Windows
+
