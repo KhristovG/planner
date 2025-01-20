@@ -94,45 +94,40 @@ def prep_bd():
     loaded_retriever = vector_store_loaded.as_retriever(search_kwargs={'k': 3}, search_type="mmr")
     return loaded_retriever
 @tool
-def assess_financial_status(income: float, expenses: float, credit_history: str):
-    """Оценивает финансовое состояние клиента на основе доходов, расходов и кредитной истории."""
-    # Логика для оценки финансового состояния
-    return f"Финансовое состояние оценено. Доходы: {income}, Расходы: {expenses}, Кредитная история: {credit_history}"
+def check_cancellation_conditions(transaction_id: str):
+    """Проверяет условия для отмены транзакции."""
+    # Логика для проверки условий отмены транзакции
+    return f"Условия для отмены транзакции {transaction_id} проверены."
 
 @tool
-def propose_loan_terms(income: float, credit_score: int):
-    """Предлагает варианты условий кредита на основе доходов и кредитного рейтинга."""
-    # Логика для предложения условий кредита
-    return f"Предлагаемые условия кредита для клиента с доходом {income} и кредитным рейтингом {credit_score}."
+def execute_transaction_cancellation(transaction_id: str):
+    """Выполняет отмену транзакции."""
+    # Логика для выполнения отмены транзакции
+    return f"Транзакция {transaction_id} отменена."
 
 @tool
-def confirm_client_agreement(agreement_details: str):
-    """Согласование с клиентом условий кредита."""
-    # Логика для согласования условий кредита
-    return f"Условия кредита согласованы. Детали: {agreement_details}"
+def confirm_cancellation(transaction_id: str):
+    """Подтверждает успешную отмену транзакции."""
+    # Логика для подтверждения успешной отмены транзакции
+    return f"Отмена транзакции {transaction_id} подтверждена."
 @tool
-def fetch_current_tariffs(tariffs: list):
-    """Получение актуальных тарифов на мобильный банкинг."""
-    # Логика для получения тарифов, например, через API
-    return f"Актуальные тарифы: {tariffs}"
+def analyze_suspicious_transactions(transactions: list):
+    """Анализирует список транзакций на наличие подозрительных операций."""
+    # Логика для анализа транзакций
+    suspicious_transactions = [t for t in transactions if t['amount'] > 10000 or t['location'] == 'Unknown']
+    return suspicious_transactions
 
 @tool
-def compare_tariffs_by_category(categories: dict):
-    """Сравнение предложенных тарифов по категориям."""
-    # Логика для сравнения тарифов по категориям
-    return f"Сравнение тарифов по категориям: {categories}"
+def block_suspicious_transactions(transaction_ids: list):
+    """Блокирует подозрительные транзакции на основе их идентификаторов."""
+    # Логика для блокировки транзакций
+    return f"Транзакции с ID {transaction_ids} заблокированы."
 
 @tool
-def determine_best_tariff(best_tariff: str):
-    """Определение наиболее подходящего тарифа."""
-    # Логика для определения лучшего тарифа
-    return f"Наиболее подходящий тариф: {best_tariff}"
-
-@tool
-def activate_tariff(tariff_name: str):
-    """Оформление подключения к выбранному тарифу."""
-    # Логика для оформления подключения к тарифу
-    return f"Тариф {tariff_name} успешно активирован"
+def restore_account_access(reason: str):
+    """Восстанавливает доступ к счету по указанной причине."""
+    # Логика для восстановления доступа к счету
+    return f"Доступ к счету восстановлен по причине: {reason}."
     
     
 @tool
@@ -202,3 +197,32 @@ print("tools которые мы забиндим в ллмку:", [tool_.name f
 tool_node = ToolNode(all_tools)
 memory = MemorySaver()
 
+slovar = {
+    'Название сценария': [
+        '''Отмена транзакции''',
+        '''Защита счета от мошенничества''',
+    ],
+    'Условия входа': [
+        '''Запрос пользователя связан с одной из перечисленных тем: 
+1) отмена транзакции
+2) возврат средств''',
+        '''Запрос пользователя связан с одной из перечисленных тем:
+1) подозрительная активность на счете
+2) уведомление о возможном мошенничестве''',
+    ],
+    'Описание сценария': [
+        '''Получение информации о транзакции. Проверка условий отмены. - Используй функцию check_cancellation_conditions(). Выполнение отмены транзакции. - Используй функцию execute_transaction_cancellation(). Подтверждение успешной отмены. - Используй функцию confirm_cancellation().''',
+        '''Проверка активности транзакций. Анализ подозрительных операций. - Используй функцию analyze_suspicious_transactions(). Уведомление клиента о подозрительных действиях. Блокировка подозрительных транзакций. - Используй функцию block_suspicious_transactions(). Восстановление доступа к счету. - Функция restore_account_access().''',
+    ],
+    'Справочная информация': [
+        '''
+        Справочной информации нет для текущего сценария, используйте функции check_cancellation_conditions(), execute_transaction_cancellation(), confirm_cancellation().
+        ''',
+        '''
+        Справочной информации нет для текущего сценария, используйте функции analyze_suspicious_transactions(), block_suspicious_transactions(), restore_account_access().
+        ''',
+    ],
+}
+
+df = pd.DataFrame(slovar)
+print(df)
