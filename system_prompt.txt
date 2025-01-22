@@ -23,16 +23,14 @@ funcs: "get_user_cards() , block_card()"}
 ТВОЙ ОТВЕТ:
 
 @tool
-def get_user_cards(cards_name: str):
+def get_user_cards(cards_name: str) -> str:
     """Выдаёт пользователю список карт, которые у него есть."""
     cards_name = ['MASTERCARD ***1234', 'VISA ***2345','МИР ***3456']
     # Логика для получения списка карт пользователя через API или другой механизм.У пользователя есть следующие карты ***1234, ***2345 или ***3456
     return f'Список доступных карт: {cards_name}'
 
 @tool
-def block_card(card_name: str):
+def block_card(card_name: str) -> str:
     """Заблокировать карту"""
     # Логика для блокировки карты через API или другой механизм
     return f"Карта {card_name} успешно заблокирована."
-
-    
