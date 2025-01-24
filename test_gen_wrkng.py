@@ -95,21 +95,51 @@ def prep_bd():
     loaded_retriever = vector_store_loaded.as_retriever(search_kwargs={'k': 3}, search_type="mmr")
     return loaded_retriever
 @tool
-def restore_card_access(card_name: str, reason: str) -> str:
-    """Восстановление доступа к услуге для карты по указанной причине."""
-    # Логика для восстановления доступа к услуге для карты через API или другой механизм
-    return f"Доступ к услуге для карты {card_name} по причине {reason} успешно восстановлен."
-@tool
-def evaluate_credit_limit(user_id: str) -> str:
-    """Оценивает текущий лимит и историю использования карты для пользователя."""
-    # Логика для оценки лимита и истории использования карты
-    return f"Оценка лимита и истории использования для пользователя {user_id} завершена."
+def assess_portfolio_risks(risks: str) -> str:
+    """Оценивает риски инвестиционного портфеля."""
+    # Логика для оценки рисков портфеля
+    return f"Оценка рисков портфеля: {risks}"
 
 @tool
-def decide_limit_increase(user_id: str, limit_increase: float) -> str:
-    """Принимает решение о повышении лимита для пользователя."""
-    # Логика для принятия решения о повышении лимита
-    return f"Решение по повышению лимита на {limit_increase} для пользователя {user_id} принято."
+def identify_investment_goals(goals: str) -> str:
+    """Определяет цели инвестирования клиента."""
+    # Логика для определения целей инвестирования
+    return f"Цели инвестирования: {goals}"
+
+@tool
+def evaluate_asset_performance(performance: str) -> str:
+    """Анализирует текущую доходность активов."""
+    # Логика для анализа доходности активов
+    return f"Анализ доходности активов: {performance}"
+
+@tool
+def suggest_portfolio_rebalancing(recommendations: str) -> str:
+    """Предлагает рекомендации по ребалансировке портфеля."""
+    # Логика для предложения рекомендаций по ребалансировке
+    return f"Рекомендации по ребалансировке портфеля: {recommendations}"
+@tool
+def check_current_limit(current_limit: float) -> str:
+    """Проверяет текущий лимит клиента."""
+    # Логика для проверки текущего лимита клиента
+    return f"Текущий лимит: {current_limit}"
+
+@tool
+def analyze_risk(risk_level: str) -> str:
+    """Анализирует риски и возможности увеличения лимита."""
+    # Логика для анализа рисков
+    return f"Уровень риска: {risk_level}"
+
+@tool
+def confirm_new_limit(new_limit: float) -> str:
+    """Согласовывает новый лимит с клиентом."""
+    # Логика для согласования нового лимита
+    return f"Новый лимит: {new_limit} успешно подтвержден."
+
+@tool
+def notify_limit_change(new_limit: float) -> str:
+    """Оповещает клиента о изменении лимита."""
+    # Логика для оповещения клиента
+    return f"Ваш лимит был изменен на {new_limit}."
     
     
 @tool
@@ -183,28 +213,28 @@ memory = MemorySaver()
 
 slovar = {
     'Название сценария': [
-        '''Проблемы с дебетовой картой''',
-        '''Изменение лимита по кредитной карте''',
+        '''Анализ инвестиционного портфеля''',
+        '''Изменение лимита безопасности на счете''',
     ],
     'Условия входа': [
         '''Запрос пользователя связан с одной из перечисленных тем:
-1) блокировка дебетовой карты
-2) ошибка при оплате картой''',
+1) инвестиции в акции
+2) диверсификация портфеля
+3) риски инвестиций''',
         '''Запрос пользователя связан с одной из перечисленных тем:
-1) лимит на кредитной карте
-2) повышение лимита
-3) временное увеличение лимита''',
+1) изменение условий безопасности
+2) запрос на настройку уведомлений о транзакциях''',
     ],
     'Описание сценария': [
-        '''Проверка статуса карты. Установление причин недоступности средств. Восстановление доступа к услуге - Используй функцию restore_card_access().''',
-        '''Проверка идентификации клиента. Оценка текущего лимита и истории использования карты. - Используй функцию evaluate_credit_limit(). Принятие решения о повышении лимита. - Воспользуйся функцией decide_limit_increase().''',
+        '''Сбор информации о текущих инвестициях клиента. Оценка рисков инвестиционного портфеля. - Используй функцию assess_portfolio_risks(). Определение целей инвестирования клиента. - Примените функцию identify_investment_goals(). Анализ текущей доходности активов. - Функция evaluate_asset_performance(). Предложение рекомендаций по ребалансировке портфеля. - Используй функцию suggest_portfolio_rebalancing().''',
+        '''Идентификация клиента для изменения лимита. Проверка текущего лимита и истории транзакций. - Используй функцию check_current_limit(). Анализ рисков и возможностей увеличения лимита. - Предложи варианты с использованием функции analyze_risk(). Согласование нового лимита. - Функция confirm_new_limit(). Оповещение клиента о изменении лимита. - Используй функцию notify_limit_change().''',
     ],
     'Справочная информация': [
         '''
-        Справочной информации нет для текущего сценария, используйте функции restore_card_access().
+        Справочной информации нет для текущего сценария, используйте функции assess_portfolio_risks(), identify_investment_goals(), evaluate_asset_performance(), suggest_portfolio_rebalancing().
         ''',
         '''
-        Справочной информации нет для текущего сценария, используйте функции evaluate_credit_limit(), decide_limit_increase().
+        Справочной информации нет для текущего сценария, используйте функции check_current_limit(), analyze_risk(), confirm_new_limit(), notify_limit_change().
         ''',
     ],
 }
@@ -861,3 +891,27 @@ app = workflow.compile(checkpointer=memory)
 
 # display(Image(app.get_graph(xray=True).draw_mermaid_png()))
 print('НОЛЬ ОШИБОК')
+import pandas as pd
+import uuid
+
+# Определение тестовой структуры
+CACHE_DF = pd.DataFrame(columns=["plan_id", "plan_text", "plan_status", "completed_items", "start_mes", "summary"])
+thread_id = str(uuid.uuid4())
+config = {"configurable": {"thread_id": thread_id}, "recursion_limit": 10}
+_printed = set()
+
+testing_dialog = [
+    "Привет, как дела?",
+    "Супер, меня зовут Максим",
+    "Как меня зовут",
+    "Расскажи про кошек",
+    "Теперь про собак",
+]
+
+# Проверка диалогов через stream
+for question in testing_dialog:
+    events = app.stream(
+        {"messages": ("user", question)}, config, stream_mode="values"
+    )
+    for event in events:
+        _print_event(event, _printed)
