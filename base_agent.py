@@ -578,13 +578,7 @@ def conditions_and_plans(state):# -> Command[Literal["node_scenario_plan", "node
     
     if score_scen.content.lower() not in ['no',"'no'"]:
         print('ПЛАН ПО СЦЕНАРИЮ')
-        matching_rows = df[df['Название сценария'] == score_scen.content]
-        if not matching_rows.empty:
-            opisanie_scen = matching_rows['Описание сценария'].iloc[[0]]
-        else:
-            # Обработка случая, когда нет совпадений
-            opisanie_scen = "Просто диалог с пользователем"
-
+        opisanie_scen = df[df['Название сценария'] == score_scen.content]['Описание сценария'][0]
         plan_pr = plan_scenar(opisanie_scen, state['messages'][-1].content)
 
         # print(f" node_conditions_and_plans plan_pr{plan_pr}")
