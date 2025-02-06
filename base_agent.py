@@ -438,7 +438,6 @@ def extract_relevant_messages(messages):
 def update_plan_status_with_agent2(df, messages):
     # Формируем контекст для промпта
     all_plans = {f"plan_id:{row['plan_id']}, plan_text: {row['plan_text']}" for _, row in df.iterrows()}
-    # all_plans = df[['plan_id','plan_text']].to_string(index=False, header=True)
     message_context = clean_dialogue(extract_relevant_messages(messages=messages))
 
     # Вызываем агента
@@ -447,14 +446,16 @@ def update_plan_status_with_agent2(df, messages):
          'messages': message_context}
     )
 
-    # Извлекаем JSON-строку, удаляя обрамляющие символы
+    # Очищаем содержимое от обрамляющих символов
+    content = result.content.strip('```json').strip('```').strip()
 
-    print(f"СТАТУС {result.content}")
-    
-    content = result.content.strip('```json').strip().strip('```')
-
-    # Обновляем датафрейм на основе выполненных пунктов
-    plan_updates = eval(content)  # Преобразуем JSON-строку в словарь
+    try:
+        # Используем ast.literal_eval для безопасного преобразования
+        plan_updates = ast.literal_eval(content)
+    except (SyntaxError, ValueError) as e:
+        print(f"Ошибка при парсинге: {e}")
+        print(f"Проблемное содержимое: {content}")
+        return df
 
     for id_plan, data in plan_updates.items():
         plan_id = int(id_plan)  # Преобразуем строковый ключ в число
@@ -466,6 +467,7 @@ def update_plan_status_with_agent2(df, messages):
             df.loc[df['plan_id'] == plan_id, 'completed_items'] = ', '.join(data['completed_items'])
 
     return df
+
 
 #status without agent
 def update_plan_status(df, cur_plan_id):
